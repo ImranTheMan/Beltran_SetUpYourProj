@@ -1,0 +1,18 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+
+}
+@{
+ 
+    var weekDay = DateTime.Now.DayOfWeek;
+    string currentMonth = DateTime.Now.ToString("MMMM");
+    string currentDay = DateTime.Now.Day.ToString();
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>it is evening on @weekDay,@currentDay,@currentMonth</p>
+</div>

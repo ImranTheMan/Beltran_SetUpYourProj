@@ -1,0 +1,34 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.area {
+    background-size: cover;
+    background-image: url("bg.jpg");
+}
+.myimg{
+    border-radius:400px;
+    margin:35px;
+}
+.Details{
+    font-size:20px;
+    margin-left:40px;
+    margin-top:30px;
+}
+.Details h1{
+    color:#5b1111
+}
