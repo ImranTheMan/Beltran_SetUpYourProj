@@ -1,0 +1,97 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Machine Problem 1";
+}
+
+@{
+    DateTime Birthday = new DateTime(2002, 10, 28);
+
+    int age = DateTime.Now.Year - Birthday.Year;
+    if (DateTime.Now < Birthday.AddYears(age)) age--;
+
+}
+@{
+
+    int isTenured = 1;
+    int SalaryPerHour = 8;
+    int SalaryPerDay = 0;
+    int SalaryPerMonth = 0;
+    var Status = "";
+    int isTenured2 = 0;
+    var Status2 = "";
+    int PSalaryPerHour = 8;
+    int PSalaryPerDay = 0;
+    int PSalaryPerMonth = 0;
+    if (isTenured == 1)
+    {
+        Status = "Permanent";
+        SalaryPerDay = SalaryPerHour * 8;
+        SalaryPerMonth = (SalaryPerDay * 30) + 500;
+    }
+    else
+    {
+        SalaryPerMonth = 0;
+    }
+    if (isTenured2 == 0)
+    {
+        Status2 = "Probationary";
+        PSalaryPerDay = PSalaryPerHour * 8;
+        PSalaryPerMonth = (PSalaryPerDay * 30);
+
+    }
+
+    
+}
+
+<h1>NAME & AGE:</h1>
+<p>"I'm @Model.FirstName @Model.LastName and I'm @age yrs. old"</p>
+<p>Email: @Model.Email</p>
+<p>Domain: @Model.Email.Split('@')[1]</p>
+<p>Username: @Model.Email.Split('@')[0]</p>
+
+<h1>SAMPLE OUTPUT</h1>
+<p>Name: @Model.FirstName @Model.LastName</p>
+<p>Email: @Model.Email</p>
+<p>Status: @Status</p>
+<p>Daily Salary: $@SalaryPerDay.ToString("0.00")</p>
+<p>Monthly Salary: $@SalaryPerMonth.ToString("0.00")</p>
+<p>------------Probitionary-----------</p>
+<p>Name: @Model.FirstName @Model.LastName</p>
+<p>Email: @Model.Email</p>
+<p>Status:@Status2</p>
+<p>Daily Salary: $@PSalaryPerDay.ToString("0.00")</p>
+<p>Monthly Salary: $@PSalaryPerMonth.ToString("0.00")</p>
+
+
+
+
+
+<h1>Grade Calculator</h1>
+
+<form id="gradeForm" method="post">
+    <div>
+        <label for="PrelimGrade">Prelim Grade:</label>
+        <input type="number" step="0.01" id="PrelimGrade" name="PrelimGrade" asp-for="PrelimGrade" />
+    </div>
+    <div>
+        <label for="FinalGrade">Final Grade:</label>
+        <input type="number" step="0.01" id="FinalGrade" name="FinalGrade" asp-for="FinalGrade" />
+    </div>
+    <div>
+        <button type="submit">Calculate</button>
+    </div>
+</form>
+
+@if (Model.Calculated)
+{
+    <div id="results">
+        <h2>Results:</h2>
+        <p>Name: @Model.FirstName @Model.LastName</p>
+        <p>Prelim Grade: @Model.PrelimGrade</p>
+        <p>Final Grade: @Model.FinalGrade</p>
+        <p>Semestral Grade: @Model.SemGrade</p>
+        <p>Transmuted Grade: @Model.TransmutedGrade</p>
+    </div>
+}
+
