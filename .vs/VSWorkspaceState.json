@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\MachineProb1",
+    "\\MachineProb1\\MachineProb1"
   ],
-  "SelectedNode": "\\WebApplication1.sln",
+  "SelectedNode": "\\MachineProb1\\MachineProb1",
   "PreviewInSolutionExplorer": false
 }
