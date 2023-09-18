@@ -66,7 +66,7 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditStudent(Instructor instChange)
+        public IActionResult EditInstructor(Instructor instChange)
         {
             var stud = InstructorList.FirstOrDefault(st => st.Id == instChange.Id);
 
