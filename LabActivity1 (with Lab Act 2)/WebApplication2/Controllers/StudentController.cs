@@ -1,36 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Models;
+using WebApplication2.Services;
 
 
 namespace WebApplication2.Controllers
 {
     public class StudentController : Controller
     {
-        List<Students> StudentList = new List<Students>
-            {
-                new Students()
-                {
-                    Id= 1,FirstName = "Gabriel",LastName = "Montano", Course = Course.BSIT, AdmissionDate = DateTime.Parse("2022-08-26"), GPA = 1.5, Email = "ghaby021@gmail.com"
-                },
-                new Students()
-                {
-                    Id= 2,FirstName = "Zyx",LastName = "Montano", Course = Course.BSIS, AdmissionDate = DateTime.Parse("2022-08-07"), GPA = 1, Email = "zyx@gmail.com"
-                },
-                new Students()
-                {
-                    Id= 3,FirstName = "Aerdriel",LastName = "Montano", Course = Course.BSCS, AdmissionDate = DateTime.Parse("2020-01-25"), GPA = 1.5, Email = "aerdriel@gmail.com"
-                }
-            };
+        private readonly IMyFakeDataService _fakeData;
+        public StudentController(IMyFakeDataService fakeData)
+        {
+            _fakeData = fakeData;
+        }
+
         public IActionResult Index()
         {
 
-            return View(StudentList);
+            return View(_fakeData.StudentList);
         }
 
         public IActionResult ShowDetail(int id)
         {
             //Search for the student whose id matches the given id
-            Students? student = StudentList.FirstOrDefault(st => st.Id == id);
+            Student? student = _fakeData.StudentList.FirstOrDefault(st => st.Id == id);
 
             if (student != null)//was an student found?
                 return View(student);
@@ -43,10 +35,10 @@ namespace WebApplication2.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddStudent(Students newStudent)
+        public IActionResult AddStudent(Student newStudent)
         {
-            StudentList.Add(newStudent);
-            return View("Index", StudentList);
+            _fakeData.StudentList.Add(newStudent);
+            return RedirectToAction("Index", _fakeData.StudentList);
         }
 
         public IActionResult EditStudent()
@@ -57,7 +49,7 @@ namespace WebApplication2.Controllers
         [HttpGet]
         public IActionResult EditStudent(int id)
         {
-            Students? student = StudentList.FirstOrDefault(st => st.Id == id);
+            Student? student = _fakeData.StudentList.FirstOrDefault(st => st.Id == id);
 
             if (student != null)
                 return View(student);
@@ -66,9 +58,9 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditStudent(Students studentChange)
+        public IActionResult EditStudent(Student studentChange)
         {
-            var stud = StudentList.FirstOrDefault(st => st.Id == studentChange.Id);
+            var stud = _fakeData.StudentList.FirstOrDefault(st => st.Id == studentChange.Id);
 
             if (stud != null)
             {
@@ -79,9 +71,29 @@ namespace WebApplication2.Controllers
                 stud.Course = studentChange.Course;
                 stud.AdmissionDate = studentChange.AdmissionDate;
                 stud.Email = studentChange.Email;
-                return View("Index", StudentList);
+                return RedirectToAction("index");
             }
             return NotFound();
         }
+        [HttpGet]
+        public IActionResult DeleteStudent(int id)
+        {
+            Student? student = _fakeData.StudentList.FirstOrDefault(st => st.Id==id);
+            return View(student);
+        }
+        [HttpPost]
+        public IActionResult DeleteStudent(Student student) { 
+            var studentChange = _fakeData.StudentList.FirstOrDefault(st => st.Id == student.Id);
+
+            if (studentChange != null)
+            {
+                _fakeData.StudentList.Remove(studentChange);
+                return  RedirectToAction("index");
+            }
+            return NotFound();
+        }
+
+        
+       
     }
 }
