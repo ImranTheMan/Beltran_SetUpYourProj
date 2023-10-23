@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication2.Data;
 using WebApplication2.Models;
 using WebApplication2.Services;
 
@@ -7,22 +8,23 @@ namespace WebApplication2.Controllers
 {
     public class StudentController : Controller
     {
-        private readonly IMyFakeDataService _fakeData;
-        public StudentController(IMyFakeDataService fakeData)
+        private readonly AppDbContext _dbContext;
+
+        public StudentController(AppDbContext dbContext)
         {
-            _fakeData = fakeData;
+            _dbContext = dbContext;
         }
 
         public IActionResult Index()
         {
 
-            return View(_fakeData.StudentList);
+            return View(_dbContext.Students);
         }
 
         public IActionResult ShowDetail(int id)
         {
             //Search for the student whose id matches the given id
-            Student? student = _fakeData.StudentList.FirstOrDefault(st => st.Id == id);
+            Student? student = _dbContext.Students.FirstOrDefault(st => st.Id == id);
 
             if (student != null)//was an student found?
                 return View(student);
@@ -37,8 +39,9 @@ namespace WebApplication2.Controllers
         [HttpPost]
         public IActionResult AddStudent(Student newStudent)
         {
-            _fakeData.StudentList.Add(newStudent);
-            return RedirectToAction("Index", _fakeData.StudentList);
+            _dbContext.Students.Add(newStudent);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", _dbContext.Students);
         }
 
         public IActionResult EditStudent()
@@ -49,7 +52,7 @@ namespace WebApplication2.Controllers
         [HttpGet]
         public IActionResult EditStudent(int id)
         {
-            Student? student = _fakeData.StudentList.FirstOrDefault(st => st.Id == id);
+            Student? student = _dbContext.Students.FirstOrDefault(st => st.Id == id);
 
             if (student != null)
                 return View(student);
@@ -60,7 +63,7 @@ namespace WebApplication2.Controllers
         [HttpPost]
         public IActionResult EditStudent(Student studentChange)
         {
-            var stud = _fakeData.StudentList.FirstOrDefault(st => st.Id == studentChange.Id);
+            var stud = _dbContext.Students.FirstOrDefault(st => st.Id == studentChange.Id);
 
             if (stud != null)
             {
@@ -71,23 +74,25 @@ namespace WebApplication2.Controllers
                 stud.Course = studentChange.Course;
                 stud.AdmissionDate = studentChange.AdmissionDate;
                 stud.Email = studentChange.Email;
-                return RedirectToAction("index");
+                
             }
-            return NotFound();
+            _dbContext.SaveChanges();
+            return RedirectToAction("index");
         }
         [HttpGet]
         public IActionResult DeleteStudent(int id)
         {
-            Student? student = _fakeData.StudentList.FirstOrDefault(st => st.Id==id);
+            Student? student = _dbContext.Students.FirstOrDefault(st => st.Id==id);
             return View(student);
         }
         [HttpPost]
         public IActionResult DeleteStudent(Student student) { 
-            var studentChange = _fakeData.StudentList.FirstOrDefault(st => st.Id == student.Id);
+            var studentChange = _dbContext.Students.FirstOrDefault(st => st.Id == student.Id);
 
             if (studentChange != null)
             {
-                _fakeData.StudentList.Remove(studentChange);
+                _dbContext.Students.Remove(studentChange);
+                _dbContext.SaveChanges();
                 return  RedirectToAction("index");
             }
             return NotFound();
