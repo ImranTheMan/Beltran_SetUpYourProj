@@ -8,6 +8,7 @@
 <h3>Add Instructor</h3>
 
 <form asp-action="AddInstructor" method="post">
+    <div asp-validation-summary="All"></div>
     <div class="mb-3">
         <label asp-for="Id" class="form-label">ID</label>
         <input asp-for="Id" class="form-control" />

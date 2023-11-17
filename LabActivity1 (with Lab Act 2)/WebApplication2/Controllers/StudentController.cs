@@ -39,9 +39,12 @@ namespace WebApplication2.Controllers
         [HttpPost]
         public IActionResult AddStudent(Student newStudent)
         {
+            if (!ModelState.IsValid)
+                return View();
             _dbContext.Students.Add(newStudent);
             _dbContext.SaveChanges();
             return RedirectToAction("Index", _dbContext.Students);
+            
         }
 
         public IActionResult EditStudent()

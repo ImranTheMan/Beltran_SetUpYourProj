@@ -1,9 +1,10 @@
 ﻿using WebApplication2.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace WebApplication2.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User>
     {
         public DbSet<Student> Students { get; set; }
         public DbSet<Instructor> Instructors { get; set; }

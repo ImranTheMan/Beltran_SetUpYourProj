@@ -41,10 +41,14 @@ namespace WebApplication2.Controllers
         [HttpPost]
         public IActionResult AddInstructor(Instructor newInstructor)
         {
+           
+            if (!ModelState.IsValid)
+                 return View();
             _dbContext.Instructors.Add(newInstructor);
             _dbContext.SaveChanges();
             return View("Index", _dbContext.Instructors);
         }
+
 
         public IActionResult EditInstructor()
         {
@@ -99,6 +103,7 @@ namespace WebApplication2.Controllers
             }
             return NotFound();
         }
+        
 
     }
 }
